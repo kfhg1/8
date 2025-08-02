@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>استبيان رضا المستخدم - منصة ذكرني</title>
+  <style>
+    body { font-family: Tahoma, sans-serif; background-color: #f4fdf7; margin: 0; padding: 20px; }
+    h1 { text-align: center; color: #006c35; }
+    form {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label { font-weight: bold; display: block; margin-bottom: 8px; }
+    select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      padding: 12px 25px;
+      background-color: #006c35;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #004d24;
+    }
+    .success {
+      background: #e1f9ed;
+      color: #006c35;
+      padding: 15px;
+      text-align: center;
+      margin-top: 20px;
+      border-radius: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body onload="checkLogin()">
+  <h1>📋 استبيان رضا المستخدم</h1>
+
+  <form onsubmit="handleSurvey(event)">
+    <label>ما مدى رضاك عن المساعد الذكي؟</label>
+    <select id="q1" required>
+      <option value="">اختر</option>
+      <option>ممتاز</option>
+      <option>جيد</option>
+      <option>مقبول</option>
+      <option>سيء</option>
+    </select>
+
+    <label>ما مدى رضاك عن جدول المراجعة؟</label>
+    <select id="q2" required>
+      <option value="">اختر</option>
+      <option>ممتاز</option>
+      <option>جيد</option>
+      <option>مقبول</option>
+      <option>سيء</option>
+    </select>
+
+    <label>ما مدى رضاك عن المجتمع التعليمي؟</label>
+    <select id="q3" required>
+      <option value="">اختر</option>
+      <option>ممتاز</option>
+      <option>جيد</option>
+      <option>مقبول</option>
+      <option>سيء</option>
+    </select>
+
+    <label>ملاحظات إضافية:</label>
+    <textarea id="note" rows="4" placeholder="اكتب أي ملاحظات..."></textarea>
+
+    <button type="submit">إرسال الاستبيان</button>
+  </form>
+
+  <div class="success" id="successBox">✅ تم إرسال الاستبيان بنجاح!</div>
+
+  <script>
+    function checkLogin() {
+      if (!localStorage.getItem("loggedIn")) {
+        alert("🔒 يجب تسجيل الدخول أولاً.");
+        window.location.href = "login.html";
+      }
+    }
+
+    function handleSurvey(e) {
+      e.preventDefault();
+      const q1 = document.getElementById("q1").value;
+      const q2 = document.getElementById("q2").value;
+      const q3 = document.getElementById("q3").value;
+      const note = document.getElementById("note").value;
+
+      const responses = JSON.parse(localStorage.getItem("surveyResponses") || "[]");
+      responses.push({ q1, q2, q3, note, time: new Date().toLocaleString() });
+      localStorage.setItem("surveyResponses", JSON.stringify(responses));
+
+      document.getElementById("successBox").style.display = "block";
+      document.querySelector("form").reset();
+    }
+  </script>
+</body>
+</html>

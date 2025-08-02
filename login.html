@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تسجيل الدخول - منصة ذكرني</title>
+  <style>
+    body { margin: 0; font-family: Tahoma, sans-serif; background-color: #f4fdf7; }
+    .login-container {
+      max-width: 400px;
+      margin: 80px auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+    h2 {
+      text-align: center;
+      color: #006c35;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #006c35;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004d24;
+    }
+    .actions {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .actions a {
+      text-decoration: none;
+      color: #006c35;
+      font-weight: bold;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>تسجيل الدخول</h2>
+    <form onsubmit="handleLogin(event)">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="email" required />
+
+      <label>كلمة المرور</label>
+      <input type="password" id="password" required />
+
+      <button type="submit">دخول</button>
+    </form>
+    <div class="actions">
+      <a href="create-account.html">إنشاء حساب جديد</a> |
+      <a href="#" onclick="alert('📧 سيتم إرسال رابط لإعادة تعيين كلمة المرور إلى بريدك قريبًا.')">نسيت كلمة المرور؟</a>
+    </div>
+  </div>
+
+  <script>
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pass = document.getElementById("password").value;
+
+      // يمكنك ربطه بحساب فعلي لاحقًا
+      if (email && pass) {
+        localStorage.setItem("loggedIn", "true");
+        alert("✅ تم تسجيل الدخول بنجاح");
+        window.location.href = "index.html";
+      } else {
+        alert("❌ البريد وكلمة المرور مطلوبة");
+      }
+    }
+  </script>
+</body>
+</html>

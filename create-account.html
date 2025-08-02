@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إنشاء حساب - منصة ذكرني</title>
+  <style>
+    body {
+      font-family: Tahoma, sans-serif;
+      background-color: #f4fdf7;
+      margin: 0;
+    }
+    .container {
+      max-width: 400px;
+      margin: 80px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #006c35;
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #006c35;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #004d24;
+    }
+    .actions {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .actions a {
+      text-decoration: none;
+      color: #006c35;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>إنشاء حساب جديد</h2>
+    <form onsubmit="register(event)">
+      <label>الاسم الكامل</label>
+      <input type="text" id="fullname" required>
+
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="email" required>
+
+      <label>كلمة المرور</label>
+      <input type="password" id="password" required>
+
+      <button type="submit">تسجيل</button>
+    </form>
+    <div class="actions">
+      <p>لديك حساب؟ <a href="login.html">تسجيل الدخول</a></p>
+    </div>
+  </div>
+
+  <script>
+    function register(e) {
+      e.preventDefault();
+      const name = document.getElementById("fullname").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (name && email && password) {
+        // تخزين الحساب (اختياري، فقط تجريبي)
+        localStorage.setItem("loggedIn", "true");
+        alert("✅ تم إنشاء الحساب وتسجيل الدخول بنجاح");
+        window.location.href = "index.html";
+      } else {
+        alert("❌ جميع الحقول مطلوبة");
+      }
+    }
+  </script>
+</body>
+</html>

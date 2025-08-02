@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>المساعد الذكي - منصة ذكرني</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body { font-family: Tahoma, sans-serif; background: #f7fdf9; margin: 0; }
+    header { background: #006c35; color: white; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    header img { height: 50px; }
+    header h1 { margin: 0; font-size: 1.6rem; }
+    nav a { color: white; margin-left: 15px; text-decoration: none; font-weight: bold; }
+    .container { max-width: 900px; margin: 40px auto; padding: 20px; }
+    h2 { text-align: center; color: #004d24; margin-bottom: 30px; }
+    textarea { width: 80%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; }
+    button { padding: 10px 25px; background-color: #006c35; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    button:hover { background-color: #004d24; }
+    #responseBox { background: #e7fbee; padding: 20px; border-radius: 10px; border: 1px solid #b2dfc1; display: none; margin-top: 20px; }
+    footer { background: linear-gradient(135deg, #004d24, #006c35); color: #e0f2e9; padding: 30px 20px; text-align: center; margin-top: 50px; }
+    .footer-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; max-width: 1000px; margin: auto; }
+    .footer-section { flex: 1 1 250px; background: rgba(255, 255, 255, 0.08); padding: 20px; border-radius: 12px; }
+    .footer-section h3 { color: #a4d29f; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.2rem; margin-bottom: 10px; }
+    .footer-section a { color: #d0f0c0; text-decoration: none; font-weight: bold; }
+  </style>
+</head>
+<body onload="checkLogin()">
+  <header>
+    <div class="logo">
+      <img src="https://upload.wikimedia.org/wikipedia/ar/thumb/7/75/شعار_جامعة_جازان.svg/1200px-شعار_جامعة_جازان.svg.png" alt="شعار الجامعة" />
+      <h1>منصة ذكرني</h1>
+    </div>
+    <nav>
+      <a href="index.html">الرئيسية</a>
+      <a href="login.html">تسجيل الدخول</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2><i class="fa-solid fa-robot"></i> المساعد الذكي</h2>
+
+    <form onsubmit="handleSubmit(event)" style="margin-bottom: 30px; text-align: center;">
+      <h3>💬 اكتب سؤالك للمساعد الذكي</h3>
+      <textarea id="userQuestion" placeholder="اكتب سؤالك هنا..." rows="4"></textarea><br><br>
+      <button type="submit">إرسال</button>
+    </form>
+
+    <div id="responseBox">
+      <strong>🤖 رد المساعد:</strong>
+      <p id="responseText"></p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section"><h3><i class="fa-solid fa-headset"></i> الدعم الفني</h3><p>جامعة جازان هنا لخدمتك دائمًا.</p></div>
+      <div class="footer-section"><h3><i class="fa-solid fa-phone"></i> رقم التواصل</h3><p><a href="tel:+966173295000">0173295000</a></p></div>
+      <div class="footer-section"><h3><i class="fa-solid fa-envelope"></i> البريد الإلكتروني</h3><p><a href="mailto:ccc@jazanu.edu.sa">ccc@jazanu.edu.sa</a></p></div>
+    </div>
+  </footer>
+
+  <script>
+    function checkLogin() {
+      if (!localStorage.getItem("loggedIn")) {
+        alert("يرجى تسجيل الدخول أولاً.");
+        window.location.href = "login.html";
+      }
+    }
+
+    function handleSubmit(e) {
+      e.preventDefault();
+      const question = document.getElementById("userQuestion").value.trim();
+      const responseBox = document.getElementById("responseBox");
+      const responseText = document.getElementById("responseText");
+
+      if (!question) {
+        alert("يرجى كتابة سؤال.");
+        return;
+      }
+
+      const faq = {
+        "كيف أضيف مادة": "من خلال صفحة جدول المراجعة، أدخل اسم المادة، اختر الأولوية واليوم والتاريخ، ثم اضغط على زر 'إضافة'.",
+        "كيف أحذف مادة": "بجانب كل مادة يوجد زر '🗑️ حذف' يمكنك الضغط عليه لحذف المادة.",
+        "كيف أراجع": "ابدأ بالمادة ذات الأولوية العالية، راجع باستخدام الخرائط الذهنية والاسترجاع النشط، وخذ فترات راحة قصيرة.",
+        "ما هي أفضل طرق المذاكرة": "استخدم تقنية الاسترجاع، قسم الدروس، وراجع بشكل متكرر في أوقات مختلفة.",
+        "كيف أعدل مادة": "استخدم زر ✏️ تعديل بجانب اسم المادة لتحديث بياناتها.",
+        "هل يمكن فرز المواد": "نعم، المواد تُرتب حسب الأولوية ثم التاريخ تلقائيًا."
+      };
+
+      let matched = false;
+      for (const key in faq) {
+        if (question.includes(key)) {
+          responseText.innerText = faq[key];
+          responseBox.style.display = "block";
+          matched = true;
+          break;
+        }
+      }
+
+      if (!matched) {
+        responseText.innerText = "🤔 لم أتعرف على هذا السؤال بعد.";
+        responseBox.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
