@@ -25,9 +25,6 @@
       align-items: center;
       gap: 12px;
     }
-    header img {
-      height: 50px;
-    }
     header h1 {
       margin: 0;
       font-size: 1.6rem;
@@ -45,7 +42,6 @@
     nav a:hover {
       text-decoration: underline;
     }
-
     .hero {
       padding: 60px 20px;
       text-align: center;
@@ -61,7 +57,6 @@
       max-width: 700px;
       margin: 20px auto 0;
     }
-
     .about {
       padding: 40px 20px;
       max-width: 900px;
@@ -79,8 +74,6 @@
       line-height: 1.7;
       text-align: center;
     }
-
-    /* القسم الجديد */
     .features {
       background: #f2f7f5;
       padding: 50px 20px;
@@ -133,7 +126,6 @@
     .card .btn:hover {
       background-color: #004d24;
     }
-
     footer {
       background: linear-gradient(135deg, #004d24, #006c35);
       color: #e0f2e9;
@@ -176,19 +168,38 @@
       color: #fff;
       text-decoration: underline;
     }
-
-    @media (max-width: 700px) {
-      .footer-container {
-        flex-direction: column;
-        gap: 15px;
-      }
+    #survey-popup {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: white;
+      border: 2px solid #006c35;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 9999;
+    }
+    #survey-popup button {
+      margin: 10px 5px 0 0;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #survey-popup .yes {
+      background-color: #006c35;
+      color: white;
+    }
+    #survey-popup .no {
+      background-color: #ccc;
     }
   </style>
 </head>
 <body>
   <header>
     <div class="logo">
-      <img src="https://upload.wikimedia.org/wikipedia/ar/thumb/7/75/شعار_جامعة_جازان.svg/1200px-شعار_جامعة_جازان.svg.png" alt="شعار جامعة جازان">
       <h1><a href="index.html" style="color:white; text-decoration:none;">منصة ذكرني</a></h1>
     </div>
     <nav>
@@ -238,6 +249,12 @@
     </div>
   </section>
 
+  <div id="survey-popup">
+    <p>هل ترغب في المشاركة في استبيان رضا المستفيد عن الخدمة؟</p>
+    <button class="yes" onclick="window.location.href='survey.html'">نعم</button>
+    <button class="no" onclick="document.getElementById('survey-popup').style.display='none'">لا</button>
+  </div>
+
   <footer>
     <div class="footer-container">
       <div class="footer-section support">
@@ -254,5 +271,16 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const from = document.referrer;
+    if (
+      from.includes("review.html") ||
+      from.includes("assistant.html") ||
+      from.includes("community.html")
+    ) {
+      document.getElementById('survey-popup').style.display = 'block';
+    }
+  </script>
 </body>
 </html>
