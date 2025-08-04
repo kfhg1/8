@@ -5,55 +5,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>نتائج الاستبيان - منصة ذكرني</title>
   <style>
-    body { font-family: Tahoma, sans-serif; background: #f0fff8; margin: 0; padding: 20px; }
-    h1 { color: #006c35; text-align: center; }
+    body {
+      font-family: Tahoma, sans-serif;
+      background-color: #f2f9f7;
+      padding: 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #00704a;
+      margin-bottom: 20px;
+    }
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .btn-back {
+      background-color: #dddddd;
+      color: #333;
+    }
+    .btn-back:hover {
+      background-color: #cccccc;
+    }
+    .btn-export {
+      background-color: #00704a;
+      color: white;
+    }
+    .btn-export:hover {
+      background-color: #005e3c;
+    }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      background-color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      border-radius: 12px;
+      overflow: hidden;
     }
     th, td {
-      border: 1px solid #ccc;
-      padding: 12px;
+      padding: 14px 12px;
+      border-bottom: 1px solid #eee;
       text-align: center;
     }
-    th { background-color: #006c35; color: white; }
+    th {
+      background-color: #00704a;
+      color: white;
+      font-weight: bold;
+    }
+    tr:nth-child(even) td {
+      background-color: #f9f9f9;
+    }
+    tr:hover td {
+      background-color: #eef7f4;
+    }
+    .empty-message {
+      text-align: center;
+      padding: 40px;
+      font-size: 18px;
+      color: #777;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
   </style>
 </head>
-<body>
-  <h1>📊 نتائج استبيان رضا المستخدم</h1>
-  <table id="resultsTable">
-    <thead>
-      <tr>
-        <th>التقييم</th>
-        <th>القسم</th>
-        <th>الاقتراحات</th>
-        <th>التاريخ</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+<body onload="renderResults()">
+
+  <h1>📊 نتائج الاستبيان</h1>
+
+  <div class="buttons">
+    <button class="btn btn-back" onclick="goHome()">الرجوع للرئيسية</button>
+    <button class="btn btn-export" onclick="exportToCSV()">تصدير النتائج CSV</button>
+  </div>
+
+  <div id="results"></div>
 
   <script>
-    const tableBody = document.querySelector("#resultsTable tbody");
-    const surveys = JSON.parse(localStorage.getItem("surveys") || "[]");
+    function renderResults() {
+      const container = document.getElementById("results");
+      const responses = JSON.parse(localStorage.getItem("surveyResponses") || "[]");
 
-    if (surveys.length === 0) {
-      tableBody.innerHTML = "<tr><td colspan='4'>لا توجد نتائج بعد.</td></tr>";
-    } else {
-      surveys.forEach(entry => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${entry.rating} ⭐️</td>
-          <td>${entry.section}</td>
-          <td>${entry.suggestions || 'لا يوجد'}</td>
-          <td>${new Date(entry.timestamp).toLocaleString('ar-EG')}</td>
+      if (responses.length === 0) {
+        container.innerHTML = "<div class='empty-message'>لا توجد ردود حتى الآن.</div>";
+        return;
+      }
+
+      let table = `
+        <table>
+          <thead>
+            <tr>
+              <th>الرقم</th>
+              <th>الوقت</th>
+              <th>مدى رضاك</th>
+              <th>سرعة الخدمة</th>
+              <th>وضوح الإجراءات</th>
+              <th>احترافية الموظف</th>
+              <th>هل تنصح بالخدمة؟</th>
+              <th>ملاحظاتك</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      responses.forEach((res, i) => {
+        table += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${res.time}</td>
+            <td>${res.q1}</td>
+            <td>${res.q2}</td>
+            <td>${res.q3}</td>
+            <td>${res.q4}</td>
+            <td>${res.q5}</td>
+            <td>${res.note || "—"}</td>
+          </tr>
         `;
-        tableBody.appendChild(row);
       });
+
+      table += "</tbody></table>";
+      container.innerHTML = table;
+    }
+
+    function goHome() {
+      window.location.href = "index.html"; // عدل الرابط حسب اسم صفحتك الرئيسية
+    }
+
+    function exportToCSV() {
+      const responses = JSON.parse(localStorage.getItem("surveyResponses") || "[]");
+      if (responses.length === 0) return alert("لا توجد بيانات للتصدير.");
+
+      const header = ["الرقم", "الوقت", "مدى رضاك", "سرعة الخدمة", "وضوح الإجراءات", "احترافية الموظف", "هل تنصح بالخدمة؟", "ملاحظاتك"];
+      const rows = responses.map((res, i) => [
+        i + 1, res.time, res.q1, res.q2, res.q3, res.q4, res.q5, res.note || ""
+      ]);
+
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [header, ...rows].map(e => e.join(",")).join("\n");
+
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "نتائج_الاستبيان.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   </script>
+
 </body>
 </html>
