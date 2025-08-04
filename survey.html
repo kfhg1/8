@@ -50,34 +50,55 @@
   <h1>📋 استبيان رضا المستخدم</h1>
 
   <form onsubmit="handleSurvey(event)">
-    <label>ما مدى رضاك عن المساعد الذكي؟</label>
+    <label>١- ما مدى رضاك عن جودة الخدمة المقدمة؟</label>
     <select id="q1" required>
       <option value="">اختر</option>
-      <option>ممتاز</option>
-      <option>جيد</option>
-      <option>مقبول</option>
-      <option>سيء</option>
+      <option>غير راضٍ تمامًا</option>
+      <option>غير راضٍ</option>
+      <option>محايد</option>
+      <option>راضٍ</option>
+      <option>راضٍ جدًا</option>
     </select>
 
-    <label>ما مدى رضاك عن جدول المراجعة؟</label>
+    <label>٢- ما مدى سرعة الحصول على الخدمة؟</label>
     <select id="q2" required>
       <option value="">اختر</option>
-      <option>ممتاز</option>
-      <option>جيد</option>
-      <option>مقبول</option>
-      <option>سيء</option>
+      <option>بطيئة جدًا</option>
+      <option>بطيئة</option>
+      <option>متوسطة</option>
+      <option>سريعة</option>
+      <option>سريعة جدًا</option>
     </select>
 
-    <label>ما مدى رضاك عن المجتمع التعليمي؟</label>
+    <label>٣- ما مدى وضوح الإجراءات المطلوبة منك؟</label>
     <select id="q3" required>
       <option value="">اختر</option>
-      <option>ممتاز</option>
-      <option>جيد</option>
-      <option>مقبول</option>
-      <option>سيء</option>
+      <option>غير واضحة إطلاقًا</option>
+      <option>غير واضحة</option>
+      <option>محايد</option>
+      <option>واضحة</option>
+      <option>واضحة جدًا</option>
     </select>
 
-    <label>ملاحظات إضافية:</label>
+    <label>٤- ما مدى احترافية الموظف أثناء تقديم الخدمة؟</label>
+    <select id="q4" required>
+      <option value="">اختر</option>
+      <option>سيئة جدًا</option>
+      <option>سيئة</option>
+      <option>متوسطة</option>
+      <option>جيدة</option>
+      <option>ممتازة</option>
+    </select>
+
+    <label>٥- هل تنصح الآخرين باستخدام هذه الخدمة؟</label>
+    <select id="q5" required>
+      <option value="">اختر</option>
+      <option>نعم</option>
+      <option>لا</option>
+      <option>لست متأكدًا</option>
+    </select>
+
+    <label>٦- ما الذي يمكن تحسينه في هذه الخدمة؟</label>
     <textarea id="note" rows="4" placeholder="اكتب أي ملاحظات..."></textarea>
 
     <button type="submit">إرسال الاستبيان</button>
@@ -87,7 +108,7 @@
 
   <script>
     function checkLogin() {
-      if (!localStorage.getItem("loggedIn")) {
+      if (!localStorage.getItem("loggedIn") && !localStorage.getItem("isLoggedIn")) {
         alert("🔒 يجب تسجيل الدخول أولاً.");
         window.location.href = "login.html";
       }
@@ -98,10 +119,12 @@
       const q1 = document.getElementById("q1").value;
       const q2 = document.getElementById("q2").value;
       const q3 = document.getElementById("q3").value;
+      const q4 = document.getElementById("q4").value;
+      const q5 = document.getElementById("q5").value;
       const note = document.getElementById("note").value;
 
       const responses = JSON.parse(localStorage.getItem("surveyResponses") || "[]");
-      responses.push({ q1, q2, q3, note, time: new Date().toLocaleString() });
+      responses.push({ q1, q2, q3, q4, q5, note, time: new Date().toLocaleString() });
       localStorage.setItem("surveyResponses", JSON.stringify(responses));
 
       document.getElementById("successBox").style.display = "block";
